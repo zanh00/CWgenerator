@@ -4,9 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CrosswordsPuzzleGenerator"
+        xmlns:views="clr-namespace:CrosswordsPuzzleGenerator.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0">
+            <MenuItem Header="File">
+                <MenuItem Header="Load" HorizontalAlignment="Left"/>
+            </MenuItem>
+        </Menu>
+
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <views:CWSettingView/>
+        </Grid>
+
 
     </Grid>
 </Window>
