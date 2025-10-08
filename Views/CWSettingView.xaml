@@ -22,7 +22,8 @@
                     HorizontalAlignment="Left"
                     MinWidth="100">
             <Label Content="Puzzle Size:" />
-            <TextBox Height="30"/>
+            <TextBox Height="30"
+                     Text="{Binding GridSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom"
                     Width="20" HorizontalAlignment="Left">

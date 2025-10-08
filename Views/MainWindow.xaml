@@ -24,7 +24,9 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <views:CWSettingView/>
+            
+            <views:CWSettingView Grid.Column="0"/>
+            <views:CrosswordView Grid.Column="1"/>
         </Grid>
 
 
