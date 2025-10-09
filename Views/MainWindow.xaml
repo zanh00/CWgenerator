@@ -5,8 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CrosswordsPuzzleGenerator"
         xmlns:views="clr-namespace:CrosswordsPuzzleGenerator.Views"
+        xmlns:vm="clr-namespace:CrosswordsPuzzleGenerator.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
+    <Window.DataContext>
+        <vm:MainWIndowViewModel/>
+    </Window.DataContext>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -25,8 +31,8 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             
-            <views:CWSettingView Grid.Column="0"/>
-            <views:CrosswordView Grid.Column="1"/>
+            <views:CWSettingView DataContext="{Binding Settings}" Grid.Column="0"/>
+            <views:CrosswordView DataContext="{Binding Crossword}" Grid.Column="1"/>
         </Grid>
 
 

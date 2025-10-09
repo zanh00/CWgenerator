@@ -13,6 +13,22 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 
         public ObservableCollection<CellViewModel> Cells { get; set; } = new();
 
+        private int _gridSize;
+
+        public int GridSize
+        {
+            get { return _gridSize; }
+            set 
+            { 
+                if (_gridSize != value)
+                {
+                    _gridSize = value; 
+                    OnPropertyChanged(nameof(GridSize));
+                }
+            }
+        }
+
+
 
         public void GenerateEmpty(int gridSize)
         {
