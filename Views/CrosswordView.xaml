@@ -5,10 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CrosswordsPuzzleGenerator.Views" 
              xmlns:viewmodels="clr-namespace:CrosswordsPuzzleGenerator.ViewModels" 
-             d:DataContext="{d:DesignInstance Type=viewmodels:CrosswordViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=viewmodels:CrosswordViewModel,
+                                             IsDesignTimeCreatable=True}"
+             d:Background="White">
+
     <ItemsControl ItemsSource="{Binding Cells}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
@@ -19,7 +21,8 @@
 
         <ItemsControl.ItemTemplate>
             <DataTemplate>
-                <Border BorderBrush="Black" BorderThickness="0.5">
+                <Border BorderBrush="Black" BorderThickness="0.5"
+                        Margin="0.5">
                     <TextBlock Text="{Binding Character}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"

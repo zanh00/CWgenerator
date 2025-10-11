@@ -6,16 +6,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
+
 namespace CrosswordsPuzzleGenerator.ViewModels
 {
     internal class MainWIndowViewModel : INotifyPropertyChanged
     {
+        const int initialGridSize = 8;
+
         public CWSettingViewModel Settings { get; set; }
         public CrosswordViewModel Crossword { get; set; }
         public MainWIndowViewModel()
         {
-            Settings = new CWSettingViewModel();
-            Crossword = new CrosswordViewModel();
+            Settings = new CWSettingViewModel(initialGridSize);
+            Crossword = new CrosswordViewModel(initialGridSize);
 
             Settings.PropertyChanged += OnSettingsChanged;
         }

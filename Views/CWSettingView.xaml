@@ -29,8 +29,10 @@
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom"
                     Width="20" HorizontalAlignment="Left">
-            <Button Height="15" Content="+" Padding="0" FontSize="10" />
-            <Button Height="15" Content="-" Padding="0" FontSize="10" />
+            <Button Height="15" Content="+" Padding="0" FontSize="10"
+                    Command="{Binding IncreaseGridSizeCommand}"/>
+            <Button Height="15" Content="-" Padding="0" FontSize="10"
+                    Command="{Binding DecreaseGridSizeCommand}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" 
             VerticalAlignment="Top" 
@@ -41,8 +43,10 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom"
             Width="20" HorizontalAlignment="Left">
-            <Button Height="15" Content="+" Padding="0" FontSize="10" />
-            <Button Height="15" Content="-" Padding="0" FontSize="10" />
+            <Button Height="15" Content="+" Padding="0" FontSize="10"
+                    Command="{Binding IncreaseWordsToFitCommand}"/>
+            <Button Height="15" Content="-" Padding="0" FontSize="10"
+                    Command="{Binding DecreaseWordsToFitCommand}"/>
         </StackPanel>
         <Button Grid.Column="0" Grid.Row="2" Content="Generate" FontSize="15"
                 Margin="10"/>
