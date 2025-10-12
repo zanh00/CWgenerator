@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CrosswordsPuzzleGenerator.Views" 
              xmlns:viewmodels="clr-namespace:CrosswordsPuzzleGenerator.ViewModels" 
+             xmlns:val="clr-namespace:CrosswordsPuzzleGenerator.Utilities.Validation"
              d:DataContext="{d:DesignInstance Type=viewmodels:CWSettingViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -24,8 +25,19 @@
                     HorizontalAlignment="Left"
                     MinWidth="100">
             <Label Content="Puzzle Size:" />
-            <TextBox Height="30"
-                     Text="{Binding GridSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Height="30" Style="{StaticResource ValidatedTextBox}">
+                <TextBox.Text>
+                    <Binding Path="GridSize"
+                             UpdateSourceTrigger="PropertyChanged"
+                             Mode="TwoWay"
+                             ValidatesOnDataErrors="True"
+                             NotifyOnValidationError="True" >
+                        <Binding.ValidationRules>
+                            <val:PositiveIntegerRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
         </StackPanel>
         <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Bottom"
                     Width="20" HorizontalAlignment="Left">

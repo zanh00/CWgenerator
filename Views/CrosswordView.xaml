@@ -11,25 +11,32 @@
                                              IsDesignTimeCreatable=True}"
              d:Background="White">
 
-    <ItemsControl ItemsSource="{Binding Cells}">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <UniformGrid Rows="{Binding GridSize}"
-                             Columns="{Binding GridSize}"/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
+    <Viewbox Stretch="Uniform" HorizontalAlignment="Center" 
+             VerticalAlignment="Center" Margin="10" >
+        <Border BorderBrush="Black" BorderThickness="0.7">
+            <ItemsControl ItemsSource="{Binding Cells}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="{Binding GridSize}"
+                                     Columns="{Binding GridSize}"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
 
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Border BorderBrush="Black" BorderThickness="0.5"
-                        Margin="0.5">
-                    <TextBlock Text="{Binding Character}"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="14"/>
-                </Border>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="0.3"
+                                Width="25" Height="25">
+                            <TextBlock Text="{Binding Character}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+        </Border>
         
-    </ItemsControl>
+    </Viewbox>
+    
 </UserControl>
