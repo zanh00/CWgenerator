@@ -48,6 +48,10 @@ namespace CrosswordsPuzzleGenerator.Models
 			set { _wordIndex = value; }
 		}
 
+		public Field()
+		{
+			_wordIndex = -1;
+		}
 
 		public Field(char character, bool belongsToWord, int wordIndex) : base(character, belongsToWord)
         {

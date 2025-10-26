@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Ink;
 
 namespace CrosswordsPuzzleGenerator.Models;
@@ -46,6 +47,8 @@ internal class CwPGenerator
 
     /// <summary>
     /// Checks if a fields starting at position X and Y spanning for a specifed length already belong to any inserted word.
+    /// IgnorePosition parameter can be used for when a crossed word is checked for any other potential crosses. Position of the 
+    /// first cross can for this purpuse be ignored.
     /// </summary>
     /// <param name="orientation">
     /// Word orientation.
@@ -56,12 +59,18 @@ internal class CwPGenerator
     /// <param name="length">
     /// Length of the word - number of fileds to check.
     /// </param>
+    /// <param name="ignorePosition">
+    /// Position in the span to be ignored by the cross check. -1 if all fields should be checked.
+    /// </param>
     /// <returns>
     /// Index of insertedWords if any of the checked filed belongs to inserted word (crossing found), -1 otherwise.
     /// </returns>
-    private int CheckPotentialCrossing(WordOrientation orientation, Position startPosition, int length)
+    private int CheckPotentialWordToCross(WordOrientation orientation, Position? startPosition, int length, int ignorePosition)
     {
         int returnIndex = -1;
+
+        if(startPosition is not { } startPos)
+            throw new ArgumentNullException(nameof(startPosition));
 
         switch (orientation)
         {       
@@ -70,9 +79,10 @@ internal class CwPGenerator
 
                 for (int i = 0; i < length; i++)
                 {
-                    if (_matrix[startPosition.Y + i, startPosition.X].BelongsToWord)
+                    if ((_matrix[startPos.Y + i, startPos.X].BelongsToWord) && (i != ignorePosition))
                     {
-                        returnIndex = _matrix[startPosition.Y + i, startPosition.X].WordIndex;
+                        returnIndex = _matrix[startPos.Y + i, startPos.X].WordIndex;
+                        break;
                     }
                 }
                 break;
@@ -82,9 +92,10 @@ internal class CwPGenerator
 
                 for (int i = 0; i < length; i++)
                 {
-                    if (_matrix[startPosition.Y, startPosition.X + i].BelongsToWord)
+                    if ((_matrix[startPos.Y, startPos.X + i].BelongsToWord) && (i != ignorePosition))
                     {
-                        returnIndex = _matrix[startPosition.Y, startPosition.X + i].WordIndex;
+                        returnIndex = _matrix[startPos.Y, startPos.X + i].WordIndex;
+                        break;
                     }
                 }
                 break;
@@ -94,6 +105,67 @@ internal class CwPGenerator
         }
 
         return returnIndex;
+    }
+
+    private Position? CrossInsertedWord(WordInfo insertedWordInfo, WordOrientation wtbiOrinetation, string wordToBeInserted)
+    {
+        Position? wtbiStartPosition = null;
+        int ignoreCoordinate = -1;
+
+        // If both words have the same orientation we can not cross them.
+        if(insertedWordInfo.Orientation == wtbiOrinetation)
+        {
+            return null;
+        }
+
+        for (int i = 0; i < insertedWordInfo.Word.Length; i++)
+        {
+            for (int j = 0; j < wordToBeInserted.Length; j++)
+            {
+                if (insertedWordInfo.Word[i] == wordToBeInserted[j])
+                {
+                    switch (insertedWordInfo.Orientation)
+                    {
+                        case WordOrientation.eVERTICAL:
+                        case WordOrientation.eVERTICAL_REVERSE:
+
+                            wtbiStartPosition = new Position(insertedWordInfo.StartPosition.Y + i, insertedWordInfo.StartPosition.X - j);
+                            ignoreCoordinate = insertedWordInfo.StartPosition.X;
+
+                            break;
+
+                        case WordOrientation.eHORIZONTAL:
+                        case WordOrientation.eHORIZONTAL_REVERSE:
+
+                            wtbiStartPosition = new Position(insertedWordInfo.StartPosition.Y - j, insertedWordInfo.StartPosition.X + i);
+                            ignoreCoordinate = insertedWordInfo.StartPosition.Y;
+
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (!IsWithinOuterBounds(wtbiOrinetation, wtbiStartPosition, wordToBeInserted.Length))
+                    {
+                        // Word to be insereted would go out of limits, can not cross.
+                        break;
+                    }
+                    else if (CheckPotentialWordToCross(wtbiOrinetation, wtbiStartPosition, wordToBeInserted.Length, ignoreCoordinate) != -1)
+                    {
+                        // Word conflicts with another word, can not croos either.
+                        break;
+                    }
+                    else
+                    {
+                        return wtbiStartPosition;
+                    }
+                }
+            }
+        }
+
+        // No valid matches found.
+        return null;
+
     }
 
     private void InsertWord(WordOrientation orientation, Position startPosition, string wordToInsert, int wordIndex)
@@ -127,16 +199,19 @@ internal class CwPGenerator
         
     }
 
-    bool IsWithinOuterBounds(WordOrientation orientation, Position position, int length)
+    bool IsWithinOuterBounds(WordOrientation orientation, Position? position, int length)
     {
         bool retVal = true;
+
+        if (position is not { } pos)
+            throw new ArgumentNullException(nameof(position));
 
         switch (orientation)
         {
             case WordOrientation.eVERTICAL:
             case WordOrientation.eVERTICAL_REVERSE:
                 
-                if (position.Y + length > _gridSize)
+                if (pos.Y + length > _gridSize)
                 {
                     retVal = false;
                 }
@@ -146,7 +221,7 @@ internal class CwPGenerator
             case WordOrientation.eHORIZONTAL: 
             case WordOrientation.eHORIZONTAL_REVERSE:
 
-                if(position.X + length > _gridSize)
+                if(pos.X + length > _gridSize)
                 {
                     retVal =  false;
                 }
@@ -155,5 +230,42 @@ internal class CwPGenerator
         }
 
         return retVal;
+    }
+
+    private WordOrientation GetRandomOrientation()
+    {
+        return (WordOrientation)_random.Next((int)WordOrientation.eVERTICAL, (int)WordOrientation.eHORIZONTAL_REVERSE);
+    }
+
+    private Position GetRandomPosition()
+    {
+        return new Position (_random.Next(_gridSize - 1), _random.Next(_gridSize - 1));
+    }
+
+    bool GenerateCW()
+    {
+        int iterations = 0;
+
+        do
+        {
+            Position startPosition = GetRandomPosition();
+            WordOrientation orientation = GetRandomOrientation();
+            string word = _wordsToInsert[_insertedWords.Count];
+
+            if ((orientation == WordOrientation.eHORIZONTAL_REVERSE) || (orientation == WordOrientation.eVERTICAL_REVERSE))
+            {
+                word = new string(word.Reverse().ToArray());
+            }
+
+            if (!IsWithinOuterBounds(orientation, startPosition, word.Length))
+            {
+                // Word would not fit. Start from the begining.
+                iterations++;
+                break;
+            }
+
+
+
+        } while ((_insertedWords.Count < _wordsToInsert.Count) && (iterations < 100));
     }
 }
