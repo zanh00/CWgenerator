@@ -6,10 +6,6 @@ using System.Threading.Tasks;
 
 namespace CrosswordsPuzzleGenerator.Models
 {
-    enum CWOrientation
-    {
-        eVERTICAL, eHORIZONTAL, eVERTICAL_REVERSE, eHORIZONTAL_REVERSE 
-    }
     internal class WordInfo
     {
         private string? _word;
@@ -20,14 +16,21 @@ namespace CrosswordsPuzzleGenerator.Models
             set { _word = value; }
         }
 
-        private CWOrientation _orientation;
+        private WordOrientation _orientation;
 
-        public CWOrientation Orientation
+        public WordOrientation Orientation
         {
             get { return _orientation; }
             set { _orientation = value; }
         }
 
+        private Position _startPosition;
+
+        public Position StartPosition
+        {
+            get { return _startPosition; }
+            set { _startPosition = value; }
+        }
 
 
 
