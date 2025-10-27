@@ -32,7 +32,12 @@ namespace CrosswordsPuzzleGenerator.Models
             set { _startPosition = value; }
         }
 
-
+        public WordInfo(string word, WordOrientation orientation, Position startPosition)
+        {
+            _word = word;
+            _orientation = orientation;
+            _startPosition = startPosition;
+        }
 
 
     }

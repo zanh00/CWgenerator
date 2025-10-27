@@ -194,9 +194,11 @@ internal class CwPGenerator
 
                 break;
             default:
-                break;
-        }   
-        
+                throw new NotImplementedException();
+        }
+
+        _insertedWords.Add(new WordInfo(wordToInsert, orientation, startPosition));
+
     }
 
     bool IsWithinOuterBounds(WordOrientation orientation, Position? position, int length)
@@ -248,9 +250,10 @@ internal class CwPGenerator
 
         do
         {
-            Position startPosition = GetRandomPosition();
-            WordOrientation orientation = GetRandomOrientation();
-            string word = _wordsToInsert[_insertedWords.Count];
+            Position        startPosition       = GetRandomPosition();
+            WordOrientation orientation         = GetRandomOrientation();
+            string          word                = _wordsToInsert[_insertedWords.Count];
+            bool            insertionSuccessful = false;
 
             if ((orientation == WordOrientation.eHORIZONTAL_REVERSE) || (orientation == WordOrientation.eVERTICAL_REVERSE))
             {
@@ -264,8 +267,41 @@ internal class CwPGenerator
                 break;
             }
 
+            int intersectedWordIndex = CheckPotentialWordToCross(orientation, startPosition, word.Length, -1);
 
+            if (intersectedWordIndex != -1)
+            {
+                // Word intersects with an already inserted word...check if we can cross it.
+                Position? newStartPosition = CrossInsertedWord(_insertedWords[intersectedWordIndex], orientation, word);
+
+                if (newStartPosition != null)
+                {
+                    // Valid coordinates for a cross found -> word can be inserted
+                    insertionSuccessful = true;
+                    startPosition = (Position)newStartPosition;
+                }
+            }
+            else
+            {
+                // Word doesn't intersect with any existing word -> word can be inserted
+                insertionSuccessful = true;
+            }
+
+            if (insertionSuccessful)
+            {
+                InsertWord(orientation, startPosition, word, _insertedWords.Count);
+                
+            }
 
         } while ((_insertedWords.Count < _wordsToInsert.Count) && (iterations < 100));
+
+        if (_insertedWords.Count == _wordsToInsert.Count)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
