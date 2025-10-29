@@ -32,6 +32,7 @@ internal class CwPGenerator
     private Field[,] _matrix;
     private List<WordInfo> _insertedWords = new List<WordInfo>();
     private List<string> _wordsToInsert;
+    private bool _generationSuccessful = false;
 
 
     public CwPGenerator(int gridSize, IEnumerable<string> wordsToInsert)
@@ -41,6 +42,15 @@ internal class CwPGenerator
         _gridSize = gridSize;
         _random = new Random();
         _matrix = new Field[gridSize, gridSize];
+
+        for (int y = 0; y < gridSize; y++)
+        {
+            for (int x = 0; x < gridSize; x++)
+            {
+                _matrix[x, y] = new Field();
+            }
+        }
+
         _wordsToInsert = wordsToInsert.ToList() ?? throw new ArgumentNullException(nameof(wordsToInsert));
 
     }
@@ -244,7 +254,7 @@ internal class CwPGenerator
         return new Position (_random.Next(_gridSize - 1), _random.Next(_gridSize - 1));
     }
 
-    bool GenerateCW()
+    public bool GenerateCW()
     {
         int iterations = 0;
 
@@ -264,7 +274,7 @@ internal class CwPGenerator
             {
                 // Word would not fit. Start from the begining.
                 iterations++;
-                break;
+                continue;
             }
 
             int intersectedWordIndex = CheckPotentialWordToCross(orientation, startPosition, word.Length, -1);
@@ -292,16 +302,42 @@ internal class CwPGenerator
                 InsertWord(orientation, startPosition, word, _insertedWords.Count);
                 
             }
+            else
+            {
+                iterations++;
+            }
 
         } while ((_insertedWords.Count < _wordsToInsert.Count) && (iterations < 100));
 
         if (_insertedWords.Count == _wordsToInsert.Count)
         {
-            return true;
+            _generationSuccessful = true;
         }
         else
         {
-            return false;
+            _generationSuccessful = false;
         }
+
+        return _generationSuccessful;
+    }
+
+    public List<Cell> GetResutl()
+    {
+        List<Cell> cells = new List<Cell>();
+
+        if (!_generationSuccessful)
+        {
+            return cells;
+        }
+
+        for (int row = 0; row < _gridSize;  row++)
+        {
+            for (int column = 0; column < _gridSize; column++)
+            {
+                cells.Add(_matrix[row, column]);
+            }
+        }
+
+        return cells;
     }
 }

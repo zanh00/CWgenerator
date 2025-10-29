@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrosswordsPuzzleGenerator.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,11 +12,13 @@ namespace CrosswordsPuzzleGenerator.ViewModels
     class CrosswordViewModel : INotifyPropertyChanged
     {
 
-        public ObservableCollection<CellViewModel> Cells { get; set; } = new();
+        public ObservableCollection<Cell> Cells { get; set; } = new();
 
         public CrosswordViewModel(int gridSize)
         {
-            GenerateEmpty(gridSize);
+            //GenerateEmpty(gridSize);
+            List<string> words = new List<string> { "prva", "druga", "tretja"};
+            GenerateCW(gridSize, words);
         }
         
         // For desing instance
@@ -49,10 +52,28 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 
             for (int i = 0; i < total; i++)
             {
-                Cells.Add(new CellViewModel { Character = ' ' });
+                Cells.Add(new Cell());
             }
 
             OnPropertyChanged(nameof(Cells));
+        }
+
+        public void GenerateCW(int gridSize, List<string> words)
+        {
+            CwPGenerator gen = new CwPGenerator(gridSize, words);
+
+            bool isSuccessfull = gen.GenerateCW();
+
+            if (isSuccessfull)
+            {
+                List<Cell> cells = gen.GetResutl();
+                Cells.Clear();
+
+                foreach (Cell cell in cells)
+                {
+                    Cells.Add(cell);
+                }
+            }
         }
 
 
@@ -61,8 +82,4 @@ namespace CrosswordsPuzzleGenerator.ViewModels
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 
-    public class CellViewModel
-    {
-        public char Character { get; set; }
-    }
 }
