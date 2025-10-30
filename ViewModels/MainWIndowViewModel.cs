@@ -11,7 +11,7 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 {
     internal class MainWIndowViewModel : INotifyPropertyChanged
     {
-        const int initialGridSize = 8;
+        const int initialGridSize = 10;
 
         public CWSettingViewModel Settings { get; set; }
         public CrosswordViewModel Crossword { get; set; }

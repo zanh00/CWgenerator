@@ -139,7 +139,7 @@ internal class CwPGenerator
                         case WordOrientation.eVERTICAL:
                         case WordOrientation.eVERTICAL_REVERSE:
 
-                            wtbiStartPosition = new Position(insertedWordInfo.StartPosition.Y + i, insertedWordInfo.StartPosition.X - j);
+                            wtbiStartPosition = new Position(insertedWordInfo.StartPosition.X - j, insertedWordInfo.StartPosition.Y + i);
                             ignoreCoordinate = insertedWordInfo.StartPosition.X;
 
                             break;
@@ -147,7 +147,7 @@ internal class CwPGenerator
                         case WordOrientation.eHORIZONTAL:
                         case WordOrientation.eHORIZONTAL_REVERSE:
 
-                            wtbiStartPosition = new Position(insertedWordInfo.StartPosition.Y - j, insertedWordInfo.StartPosition.X + i);
+                            wtbiStartPosition = new Position(insertedWordInfo.StartPosition.X + i, insertedWordInfo.StartPosition.Y - j);
                             ignoreCoordinate = insertedWordInfo.StartPosition.Y;
 
                             break;
@@ -187,8 +187,9 @@ internal class CwPGenerator
 
                 for (int i = 0; i < wordToInsert.Length; i++)
                 {
-                    _matrix[startPosition.Y + i, startPosition.X].Character = wordToInsert[i];
-                    _matrix[startPosition.Y + i, startPosition.X].WordIndex = wordIndex;
+                    _matrix[startPosition.Y + i, startPosition.X].Character     = wordToInsert[i];
+                    _matrix[startPosition.Y + i, startPosition.X].WordIndex     = wordIndex;
+                    _matrix[startPosition.Y + i, startPosition.X].BelongsToWord = true;
                 }
 
                 break;
@@ -198,8 +199,9 @@ internal class CwPGenerator
 
                 for (int i = 0; i < wordToInsert.Length; i++)
                 {
-                    _matrix[startPosition.Y, startPosition.X + i].Character = wordToInsert[i];
-                    _matrix[startPosition.Y, startPosition.X + i].WordIndex = wordIndex;
+                    _matrix[startPosition.Y, startPosition.X + i].Character     = wordToInsert[i];
+                    _matrix[startPosition.Y, startPosition.X + i].WordIndex     = wordIndex;
+                    _matrix[startPosition.Y, startPosition.X + i].BelongsToWord = true;
                 }
 
                 break;
@@ -217,6 +219,11 @@ internal class CwPGenerator
 
         if (position is not { } pos)
             throw new ArgumentNullException(nameof(position));
+
+        if (pos.X < 0 || pos.Y < 0)
+        {
+            return false;
+        }
 
         switch (orientation)
         {

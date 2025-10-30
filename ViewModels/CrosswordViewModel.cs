@@ -17,7 +17,7 @@ namespace CrosswordsPuzzleGenerator.ViewModels
         public CrosswordViewModel(int gridSize)
         {
             //GenerateEmpty(gridSize);
-            List<string> words = new List<string> { "prva", "druga", "tretja"};
+            List<string> words = new List<string> { "prva", "druga", "tretja", "peta", "sedma"};
             GenerateCW(gridSize, words);
         }
         
