@@ -261,6 +261,28 @@ internal class CwPGenerator
         return new Position (_random.Next(_gridSize - 1), _random.Next(_gridSize - 1));
     }
 
+    private char GetRandomLetter()
+    {
+        const int alphabetStart = 65;
+        const int alphabetEnd = 90;
+
+        return (char)_random.Next(alphabetStart, alphabetEnd);
+    }
+
+    private void FillEmptyFileds()
+    {
+        for (int row = 0; row < _gridSize; row++)
+        {
+            for (int column = 0; column < _gridSize; column++)
+            {
+                if (!_matrix[row, column].BelongsToWord)
+                {
+                    _matrix[row, column].Character = GetRandomLetter();
+                }
+            }
+        }
+    }
+
     public bool GenerateCW()
     {
         int iterations = 0;
@@ -319,6 +341,7 @@ internal class CwPGenerator
         if (_insertedWords.Count == _wordsToInsert.Count)
         {
             _generationSuccessful = true;
+            FillEmptyFileds();
         }
         else
         {

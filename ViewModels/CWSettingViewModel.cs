@@ -40,6 +40,14 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 			}
 		}
 
+		public Action? GenerateRequested {  get; set; }
+
+		[RelayCommand]
+		private void Generate()
+		{
+			GenerateRequested?.Invoke();
+		}
+
 		[RelayCommand]
 		public void IncreaseGridSize()
 		{

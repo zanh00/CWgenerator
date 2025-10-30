@@ -21,6 +21,14 @@ namespace CrosswordsPuzzleGenerator.ViewModels
             Crossword = new CrosswordViewModel(initialGridSize);
 
             Settings.PropertyChanged += OnSettingsChanged;
+            Settings.GenerateRequested = OnGenerateRequested;
+        }
+
+        private void OnGenerateRequested()
+        {
+            List<string> words = new List<string> { "prva", "druga", "tretja", "peta", "sedma" };
+
+            Crossword.GenerateCW(Settings.GridSize, words);
         }
 
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)

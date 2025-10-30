@@ -61,6 +61,7 @@
                     Command="{Binding DecreaseWordsToFitCommand}"/>
         </StackPanel>
         <Button Grid.Column="0" Grid.Row="2" Content="Generate" FontSize="15"
-                Margin="10"/>
+                Margin="10"
+                Command="{Binding GenerateCommand}"/>
     </Grid>
 </UserControl>
