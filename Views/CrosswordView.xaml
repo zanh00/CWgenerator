@@ -26,10 +26,22 @@
                     <DataTemplate>
                         <Border BorderBrush="Gray" BorderThickness="0.3"
                                 Width="25" Height="25">
+
                             <TextBlock Text="{Binding Character}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       FontSize="14"/>
+                                       FontSize="14">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="Black"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding BelongsToWord}" Value="false">
+                                                <Setter Property="Foreground" Value="LightGray"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

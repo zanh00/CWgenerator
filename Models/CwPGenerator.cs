@@ -51,7 +51,9 @@ internal class CwPGenerator
             }
         }
 
-        _wordsToInsert = wordsToInsert.ToList() ?? throw new ArgumentNullException(nameof(wordsToInsert));
+        _wordsToInsert = (wordsToInsert ?? throw new ArgumentNullException(nameof(wordsToInsert)))
+            .Select(w => w.ToUpperInvariant())
+            .ToList();
 
     }
 
