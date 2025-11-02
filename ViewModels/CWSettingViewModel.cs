@@ -17,16 +17,15 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 			GridSize = gridSize;
 		}
 
-		private int _gridSize;
 
 		private int _wordsToFit;
-
 		public int WordsToFit
 		{
 			get { return _wordsToFit; }
 			set { _wordsToFit = value; }
 		}
 
+		private int _gridSize;
 		public int GridSize
 		{
 			get { return _gridSize; }
@@ -39,6 +38,19 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 				}
 			}
 		}
+
+		private List<string> _collectionNames;
+
+		public List<string> CollectionNames
+		{
+			get { return _collectionNames; }
+			set 
+			{ 
+				_collectionNames = value; 
+				OnPropertyChanged(nameof(CollectionNames));
+			}
+		}
+		
 
 		public Action? GenerateRequested {  get; set; }
 
@@ -74,6 +86,11 @@ namespace CrosswordsPuzzleGenerator.ViewModels
                 WordsToFit--;
             }
         }
+
+		public void UpdateCollectionNames(IEnumerable<string> collectionNames)
+		{
+			CollectionNames = collectionNames.ToList();
+		}
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string name)

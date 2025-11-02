@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrosswordsPuzzleGenerator.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -13,12 +14,18 @@ namespace CrosswordsPuzzleGenerator.ViewModels
     {
         const int initialGridSize = 10;
 
+        private List<WordCollection> _wordCollections = new List<WordCollection>();
+        private WordCollectionService _wordCollectionService;
+
         public CWSettingViewModel Settings { get; set; }
         public CrosswordViewModel Crossword { get; set; }
         public MainWIndowViewModel()
         {
             Settings = new CWSettingViewModel(initialGridSize);
             Crossword = new CrosswordViewModel(initialGridSize);
+
+            _wordCollectionService = new WordCollectionService();
+            _wordCollections = _wordCollectionService.LoadCollections();
 
             Settings.PropertyChanged += OnSettingsChanged;
             Settings.GenerateRequested = OnGenerateRequested;

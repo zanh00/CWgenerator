@@ -8,7 +8,8 @@
              xmlns:val="clr-namespace:CrosswordsPuzzleGenerator.Utilities.Validation"
              d:DataContext="{d:DesignInstance Type=viewmodels:CWSettingViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:Background="White">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -17,13 +18,13 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MaxWidth="100" />
+            <ColumnDefinition MaxWidth="120" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0" 
                     VerticalAlignment="Top" 
                     HorizontalAlignment="Left"
-                    MinWidth="100">
+                    Width="120">
             <Label Content="Puzzle Size:" />
             <TextBox Height="30" Style="{StaticResource ValidatedTextBox}">
                 <TextBox.Text>
@@ -49,7 +50,7 @@
         <StackPanel Grid.Row="1" 
             VerticalAlignment="Top" 
             HorizontalAlignment="Left"
-            MinWidth="100">
+            MinWidth="120">
             <Label Content="Words to fit:" />
             <TextBox Height="30"/>
         </StackPanel>
@@ -60,7 +61,15 @@
             <Button Height="15" Content="-" Padding="0" FontSize="10"
                     Command="{Binding DecreaseWordsToFitCommand}"/>
         </StackPanel>
-        <Button Grid.Column="0" Grid.Row="2" Content="Generate" FontSize="15"
+
+        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
+            <Label Content="Collection to pick from:"/>
+            <ComboBox  Margin="0,0,0,10">
+                
+            </ComboBox>
+        </StackPanel>
+                
+        <Button Grid.Column="0" Grid.Row="3" Content="Generate" FontSize="15"
                 Margin="10"
                 Command="{Binding GenerateCommand}"/>
     </Grid>
