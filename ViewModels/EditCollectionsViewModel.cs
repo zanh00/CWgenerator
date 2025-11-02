@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CrosswordsPuzzleGenerator.Models;
 using System;
 using System.Collections.Generic;
@@ -18,12 +19,42 @@ namespace CrosswordsPuzzleGenerator.ViewModels
         private ObservableCollection<WordCollection> _collections;
 
         [ObservableProperty]
-        private WordCollection selectedCollection;
+        private WordCollection _selectedCollection;
 
-        public EditCollectionsViewModel(List<WordCollection> collections)
+        [ObservableProperty]
+        private WordCollection _editableCollection;
+        
+
+        public EditCollectionsViewModel(ObservableCollection<WordCollection> collections)
         {
             _collectionSerice = new WordCollectionService();
-            _collections = collections;
+            Collections = collections;
+
+            if (collections.Count <= 0)
+            {
+                // We wan't to have at least one colleciton.
+                AddNewCollection();
+            }
+            
+        }
+
+        [RelayCommand]
+        public void AddNewCollection()
+        {
+            Collections.Add(new WordCollection("New collection"));
+        }
+
+        partial void OnSelectedCollectionChanged(WordCollection? value)
+        {
+            if (value != null)
+            {
+
+                EditableCollection = new WordCollection(value.Name, value.Words);
+            }
+            else
+            {
+                EditableCollection = null;
+            }
         }
     }
 }

@@ -23,6 +23,10 @@
             <MenuItem Header="File">
                 <MenuItem Header="Load" HorizontalAlignment="Left"/>
             </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Word collections..." HorizontalAlignment="Left"
+                          Command="{Binding OpenEditCollectionsCommand}"/>
+            </MenuItem>
         </Menu>
 
         <Grid Grid.Row="1" >

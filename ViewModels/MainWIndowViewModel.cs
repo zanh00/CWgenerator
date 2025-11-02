@@ -1,6 +1,9 @@
-﻿using CrosswordsPuzzleGenerator.Models;
+﻿using CommunityToolkit.Mvvm.Input;
+using CrosswordsPuzzleGenerator.Models;
+using CrosswordsPuzzleGenerator.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -10,11 +13,11 @@ using System.Windows.Controls;
 
 namespace CrosswordsPuzzleGenerator.ViewModels
 {
-    internal class MainWIndowViewModel : INotifyPropertyChanged
+    internal partial class MainWIndowViewModel : INotifyPropertyChanged
     {
         const int initialGridSize = 10;
 
-        private List<WordCollection> _wordCollections = new List<WordCollection>();
+        private ObservableCollection<WordCollection> _wordCollections = new ();
         private WordCollectionService _wordCollectionService;
 
         public CWSettingViewModel Settings { get; set; }
@@ -25,10 +28,26 @@ namespace CrosswordsPuzzleGenerator.ViewModels
             Crossword = new CrosswordViewModel(initialGridSize);
 
             _wordCollectionService = new WordCollectionService();
-            _wordCollections = _wordCollectionService.LoadCollections();
+
+            List<WordCollection> loadedCollections = _wordCollectionService.LoadCollections();
+
+            foreach (WordCollection wordCollection in loadedCollections)
+            {
+                _wordCollections.Add(wordCollection);
+            }
 
             Settings.PropertyChanged += OnSettingsChanged;
             Settings.GenerateRequested = OnGenerateRequested;
+        }
+
+        [RelayCommand]
+        public void OpenEditCollections()
+        {
+            var window = new EditCollectionsView();
+            var vm = new EditCollectionsViewModel(_wordCollections);
+            window.DataContext = vm;
+
+            window.ShowDialog();
         }
 
         private void OnGenerateRequested()

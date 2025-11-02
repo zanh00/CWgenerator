@@ -12,6 +12,17 @@ namespace CrosswordsPuzzleGenerator.Models
     {
         public string Name { get; set; } = string.Empty;
         public List<string> Words { get; set; } = new();
+
+        public WordCollection(string name, List<string> words)
+        {
+            Name = name;
+            Words = words;
+        }
+
+        public WordCollection(string name)
+        {
+            Name = name;
+        }
     }
 
     class WordCollectionService
