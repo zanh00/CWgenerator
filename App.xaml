@@ -6,7 +6,8 @@
              StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <conv:ValidationErrorsToStringConverter x:Key="ValidationErrorsToStringConverter"/>
-        
+        <conv:WordsListToStringConverter x:Key="WordsListToStringConverter"/>
+
         <Style TargetType="TextBox" x:Key="ValidatedTextBox">
             <Setter Property="BorderBrush" Value="Gray"/>
             <Setter Property="BorderThickness" Value="1"/>

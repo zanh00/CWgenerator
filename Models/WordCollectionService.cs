@@ -13,6 +13,11 @@ namespace CrosswordsPuzzleGenerator.Models
         public string Name { get; set; } = string.Empty;
         public List<string> Words { get; set; } = new();
 
+        public WordCollection() 
+        { 
+            Words = new List<string>(); 
+        }
+
         public WordCollection(string name, List<string> words)
         {
             Name = name;
@@ -53,6 +58,9 @@ namespace CrosswordsPuzzleGenerator.Models
         {
             if (!Directory.Exists(_directory))
                 Directory.CreateDirectory(_directory);
+
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
 
             string filePath = Path.Combine(_directory, $"{collection.Name}.json");
             string json = JsonSerializer.Serialize(collection, new JsonSerializerOptions { WriteIndented = true });
