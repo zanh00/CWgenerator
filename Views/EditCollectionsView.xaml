@@ -32,7 +32,8 @@
             <StackPanel Orientation="Horizontal">
                 <Button Content="Add new" Margin="10" 
                         Command="{Binding AddNewCollectionCommand}"/>
-                <Button Content="Remove" Margin="10" />
+                <Button Content="Remove" Margin="10"
+                        Command="{Binding RemoveCollectionCommand}"/>
             </StackPanel>
         </StackPanel>
 

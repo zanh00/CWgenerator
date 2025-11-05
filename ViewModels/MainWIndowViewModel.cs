@@ -38,6 +38,8 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 
             Settings.PropertyChanged += OnSettingsChanged;
             Settings.GenerateRequested = OnGenerateRequested;
+
+            Settings.UpdateCollectionNames(GetCollectionNames());
         }
 
         [RelayCommand]
@@ -48,6 +50,21 @@ namespace CrosswordsPuzzleGenerator.ViewModels
             window.DataContext = vm;
 
             window.ShowDialog();
+
+            // After window closed, update collection names for combo box display
+            Settings.UpdateCollectionNames(GetCollectionNames());
+        }
+
+        private ObservableCollection<string> GetCollectionNames()
+        {
+            ObservableCollection<string> collectionNames = new ObservableCollection<string>();
+
+            foreach (WordCollection wordCollection in _wordCollections)
+            {
+                collectionNames.Add(wordCollection.Name);
+            }
+
+            return collectionNames;
         }
 
         private void OnGenerateRequested()

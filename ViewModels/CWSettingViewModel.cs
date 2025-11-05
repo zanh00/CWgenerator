@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace CrosswordsPuzzleGenerator.ViewModels
 {
-    partial class CWSettingViewModel : INotifyPropertyChanged
+    partial class CWSettingViewModel : ObservableObject, INotifyPropertyChanged
     {
 		public CWSettingViewModel(int gridSize)
 		{
@@ -39,17 +41,8 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 			}
 		}
 
-		private List<string> _collectionNames;
-
-		public List<string> CollectionNames
-		{
-			get { return _collectionNames; }
-			set 
-			{ 
-				_collectionNames = value; 
-				OnPropertyChanged(nameof(CollectionNames));
-			}
-		}
+		[ObservableProperty]
+		private ObservableCollection<string> _collectionNames;
 		
 
 		public Action? GenerateRequested {  get; set; }
@@ -87,9 +80,9 @@ namespace CrosswordsPuzzleGenerator.ViewModels
             }
         }
 
-		public void UpdateCollectionNames(IEnumerable<string> collectionNames)
+		public void UpdateCollectionNames(ObservableCollection<string> collectionNames)
 		{
-			CollectionNames = collectionNames.ToList();
+			CollectionNames = collectionNames;
 		}
 
         public event PropertyChangedEventHandler? PropertyChanged;

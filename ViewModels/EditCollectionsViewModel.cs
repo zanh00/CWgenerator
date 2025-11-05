@@ -75,10 +75,27 @@ namespace CrosswordsPuzzleGenerator.ViewModels
                 // The name has changed. Remove old collection file
                 _collectionSerice.DeleteCollection(_originalName);
                 int collectionIndexToRemove = GetCollectionIndexByName(_originalName);
+
                 if (collectionIndexToRemove > -1 && collectionIndexToRemove < Collections.Count)
                 {
                     Collections.RemoveAt(collectionIndexToRemove);
                 }
+            }
+        }
+
+        [RelayCommand]
+        public void RemoveCollection()
+        {
+            if (SelectedCollection.Name != null)
+            {
+                _collectionSerice.DeleteCollection(SelectedCollection.Name);
+                int collectionIndexToRemove = GetCollectionIndexByName(SelectedCollection.Name);
+
+                if (collectionIndexToRemove > -1 && collectionIndexToRemove < Collections.Count)
+                {
+                    Collections.RemoveAt(collectionIndexToRemove);
+                }
+
             }
         }
 
