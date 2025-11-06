@@ -69,9 +69,20 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 
         private void OnGenerateRequested()
         {
-            List<string> words = new List<string> { "prva", "druga", "tretja", "peta", "sedma" };
+            //List<string> words = new List<string> { "prva", "druga", "tretja", "peta", "sedma" };
 
-            Crossword.GenerateCW(Settings.GridSize, words);
+            string selectedCollectionName = Settings.SelectedCollectionName;
+
+            WordCollection selectedCollection = WordCollectionService.GetCollectionByName(selectedCollectionName, _wordCollections);
+
+            if (selectedCollection != null)
+            {
+                Crossword.GenerateCW(Settings.GridSize, selectedCollection.Words);
+            }
+            else
+            {
+                //TODO Dialog -> collection must be selected
+            }
         }
 
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)

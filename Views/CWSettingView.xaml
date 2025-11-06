@@ -65,7 +65,8 @@
         <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
             <Label Content="Collection to pick from:"/>
             <ComboBox  Margin="0,0,0,10"
-                       ItemsSource="{Binding CollectionNames}">
+                       ItemsSource="{Binding CollectionNames, Mode=OneWay}"
+                       SelectedItem="{Binding SelectedCollectionName}">
                 
             </ComboBox>
         </StackPanel>

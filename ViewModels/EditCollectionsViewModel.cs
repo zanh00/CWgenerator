@@ -49,12 +49,18 @@ namespace CrosswordsPuzzleGenerator.ViewModels
         [RelayCommand]
         public void UpdateCollection()
         {
+            if (EditableCollection.Name == null || EditableCollection.Name.Length == 0)
+            {
+                // TODO: Add a dialog warning that collection name can not be empty
+                return;
+            }
+
             while (HasMultipleCollectionsWithName(EditableCollection.Name))
             {
                 EditableCollection.Name += "1";
             }
 
-            WordCollection collectionToUpdate = GetCollectionByName(EditableCollection.Name);
+            WordCollection collectionToUpdate = WordCollectionService.GetCollectionByName(EditableCollection.Name, Collections);
 
             if (collectionToUpdate != null)
             {
@@ -74,7 +80,7 @@ namespace CrosswordsPuzzleGenerator.ViewModels
             {
                 // The name has changed. Remove old collection file
                 _collectionSerice.DeleteCollection(_originalName);
-                int collectionIndexToRemove = GetCollectionIndexByName(_originalName);
+                int collectionIndexToRemove = WordCollectionService.GetCollectionIndexByName(_originalName, Collections);
 
                 if (collectionIndexToRemove > -1 && collectionIndexToRemove < Collections.Count)
                 {
@@ -89,7 +95,7 @@ namespace CrosswordsPuzzleGenerator.ViewModels
             if (SelectedCollection.Name != null)
             {
                 _collectionSerice.DeleteCollection(SelectedCollection.Name);
-                int collectionIndexToRemove = GetCollectionIndexByName(SelectedCollection.Name);
+                int collectionIndexToRemove = WordCollectionService.GetCollectionIndexByName(SelectedCollection.Name, Collections);
 
                 if (collectionIndexToRemove > -1 && collectionIndexToRemove < Collections.Count)
                 {
@@ -103,16 +109,6 @@ namespace CrosswordsPuzzleGenerator.ViewModels
         {
             return Collections.Count(c =>
                 string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase)) > 1;
-        }
-
-        private WordCollection? GetCollectionByName(string name)
-        {
-            return Collections.FirstOrDefault(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase));
-        }
-
-        private int GetCollectionIndexByName(string name)
-        {
-            return Collections.ToList().FindIndex(c => string.Equals(c.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
         partial void OnSelectedCollectionChanged(WordCollection? value)

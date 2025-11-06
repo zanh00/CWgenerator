@@ -43,6 +43,9 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 
 		[ObservableProperty]
 		private ObservableCollection<string> _collectionNames;
+
+		[ObservableProperty]
+		private string _selectedCollectionName;
 		
 
 		public Action? GenerateRequested {  get; set; }
@@ -83,7 +86,8 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 		public void UpdateCollectionNames(ObservableCollection<string> collectionNames)
 		{
 			CollectionNames = collectionNames;
-		}
+            OnPropertyChanged(nameof(CollectionNames));
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged(string name)
