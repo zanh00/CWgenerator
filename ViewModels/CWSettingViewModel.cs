@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -9,25 +10,27 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CrosswordsPuzzleGenerator.Utilities.Validation;
 
 namespace CrosswordsPuzzleGenerator.ViewModels
 {
-    partial class CWSettingViewModel : ObservableObject, INotifyPropertyChanged
+    partial class CWSettingViewModel : ObservableValidator, INotifyPropertyChanged
     {
 		public CWSettingViewModel(int gridSize)
 		{
 			GridSize = gridSize;
 		}
 
+        private int _wordsToFit;
 
-		private int _wordsToFit;
-		public int WordsToFit
-		{
-			get { return _wordsToFit; }
-			set { _wordsToFit = value; }
-		}
+        [Range(1, 15, ErrorMessage = "Number of words must be between 1 and 15")]
+        public int WordsToFit
+        {
+            get => _wordsToFit;
+            set => SetProperty(ref _wordsToFit, value, true); // <- 'true' triggers validation
+        }
 
-		private int _gridSize;
+        private int _gridSize;
 		public int GridSize
 		{
 			get { return _gridSize; }
@@ -35,7 +38,15 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 			{
 				if (_gridSize != value)
 				{
-					_gridSize = value;
+					if (value < 25)
+					{
+						_gridSize = value;
+					}
+					else
+					{
+						_gridSize = 25;
+					}
+
 					OnPropertyChanged(nameof(GridSize));
 				}
 			}
@@ -71,8 +82,12 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 			}
 		}
 
-        [RelayCommand]
-        private void IncreaseWordsToFit() => WordsToFit++;
+		[RelayCommand]
+		private void IncreaseWordsToFit()
+		{
+			WordsToFit++;
+			OnPropertyChanged(nameof(WordsToFit));
+		}
 
         [RelayCommand]
         private void DecreaseWordsToFit()
@@ -80,6 +95,7 @@ namespace CrosswordsPuzzleGenerator.ViewModels
             if (WordsToFit > 1)
             {
                 WordsToFit--;
+				OnPropertyChanged(nameof(WordsToFit));
             }
         }
 

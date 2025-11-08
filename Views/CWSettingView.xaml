@@ -29,7 +29,7 @@
             <TextBox Height="30" Style="{StaticResource ValidatedTextBox}">
                 <TextBox.Text>
                     <Binding Path="GridSize"
-                             UpdateSourceTrigger="PropertyChanged"
+                             UpdateSourceTrigger="LostFocus"
                              Mode="TwoWay"
                              ValidatesOnDataErrors="True"
                              NotifyOnValidationError="True" >
@@ -52,7 +52,10 @@
             HorizontalAlignment="Left"
             MinWidth="120">
             <Label Content="Words to fit:" />
-            <TextBox Height="30"/>
+            <TextBox Height="30"
+                     Style="{StaticResource ValidatedTextBox}"
+                     Text="{Binding WordsToFit, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
+                            ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Bottom"
             Width="20" HorizontalAlignment="Left">

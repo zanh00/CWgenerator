@@ -69,7 +69,7 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 
         private void OnGenerateRequested()
         {
-            //List<string> words = new List<string> { "prva", "druga", "tretja", "peta", "sedma" };
+            List<string> words = new();
 
             string selectedCollectionName = Settings.SelectedCollectionName;
 
@@ -77,12 +77,27 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 
             if (selectedCollection != null)
             {
-                Crossword.GenerateCW(Settings.GridSize, selectedCollection.Words);
+                int pickSize = Settings.WordsToFit;
+
+                if (selectedCollection.Words.Count < pickSize)
+                {
+                    pickSize = selectedCollection.Words.Count;
+                }
+
+                words = GetRandomItems(selectedCollection.Words, pickSize);
+
+                Crossword.GenerateCW(Settings.GridSize, words);
             }
             else
             {
                 //TODO Dialog -> collection must be selected
             }
+        }
+
+        public static List<string> GetRandomItems(List<string> list, int count)
+        {
+            Random random = new();
+            return list.OrderBy(_ => random.Next()).Take(count).ToList();
         }
 
         private void OnSettingsChanged(object sender, PropertyChangedEventArgs e)
