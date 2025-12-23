@@ -40,6 +40,8 @@ namespace CrosswordsPuzzleGenerator.ViewModels
             Settings.GenerateRequested = OnGenerateRequested;
 
             Settings.UpdateCollectionNames(GetCollectionNames());
+
+            CWExportService.CreateWordDocument();
         }
 
         [RelayCommand]

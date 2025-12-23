@@ -32,8 +32,6 @@ public class WordCollection
 
 class WordCollectionService
 {
-    // private const string _metaFilePath = "Data/collections.json";
-
     private readonly string _directory = Path.Combine("Data", "Collections");
 
     public List<WordCollection> LoadCollections()
