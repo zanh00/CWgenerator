@@ -34,7 +34,7 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 
             if (collections.Count <= 0)
             {
-                // We wan't to have at least one colleciton.
+                // We want to have at least one colleciton.
                 AddNewCollection();
             }
             

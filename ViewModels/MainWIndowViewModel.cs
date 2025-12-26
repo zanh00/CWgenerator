@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using CrosswordsPuzzleGenerator.Models;
 using CrosswordsPuzzleGenerator.Views;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 
@@ -41,7 +43,6 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 
             Settings.UpdateCollectionNames(GetCollectionNames());
 
-            CWExportService.CreateWordDocument();
         }
 
         [RelayCommand]
@@ -55,6 +56,21 @@ namespace CrosswordsPuzzleGenerator.ViewModels
 
             // After window closed, update collection names for combo box display
             Settings.UpdateCollectionNames(GetCollectionNames());
+        }
+
+        [RelayCommand]
+        public void ExportCW()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = "Word Document (*.docx)|*.docx";
+
+            if(saveFileDialog.ShowDialog() == true)
+            {
+                List<Cell> cells = Crossword.Cells.ToList();
+                CWExportService.CreateWordDocument(saveFileDialog.FileName, Settings.GridSize, cells);
+            }
+
         }
 
         private ObservableCollection<string> GetCollectionNames()

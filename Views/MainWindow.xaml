@@ -22,6 +22,8 @@
         <Menu HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="0">
             <MenuItem Header="File">
                 <MenuItem Header="Load" HorizontalAlignment="Left"/>
+                <MenuItem Header="Export..." HorizontalAlignment="Left"
+                          Command="{Binding ExportCWCommand}"/>
             </MenuItem>
             <MenuItem Header="Edit">
                 <MenuItem Header="Word collections..." HorizontalAlignment="Left"
