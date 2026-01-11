@@ -68,7 +68,13 @@ namespace CrosswordsPuzzleGenerator.ViewModels
             if(saveFileDialog.ShowDialog() == true)
             {
                 List<Cell> cells = Crossword.Cells.ToList();
-                CWExportService.CreateWordDocument(saveFileDialog.FileName, Settings.GridSize, cells);
+                try
+                {
+                    CWExportService.CreateWordDocument(saveFileDialog.FileName, Settings.GridSize, cells);
+                } catch (Exception ex)
+                {
+                    MessageBox.Show("Unable to save crossword to a file", "Save error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
 
         }
